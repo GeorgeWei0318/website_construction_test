@@ -54,8 +54,8 @@ function App() {
 
   return (
     <div>
-      <h1>Hello, world!</h1>
-      <p>This is my first website.</p>
+      <h1>Hello, New Friend!</h1>
+      <p>Tell me whatever function you want! ⭐</p>
       
       {/* Suggestion Box - Top Right Corner */}
       <div className="suggestion-box-corner">
