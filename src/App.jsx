@@ -2,12 +2,17 @@ import { useState } from 'react'
 import './App.css'
 
 function App() {
-  // State management - these store your data
+  // Calculator states
   const [boxA, setBoxA] = useState('')
   const [boxB, setBoxB] = useState('')
   const [result, setResult] = useState(null)
 
-  // Supporting function - put all your logic here
+  // Suggestion box states
+  const [showSuggestion, setShowSuggestion] = useState(false)
+  const [suggestionText, setSuggestionText] = useState('')
+  const [saveMessage, setSaveMessage] = useState('')
+
+  // Supporting function - calculator logic
   const handleAdd = () => {
     const numA = parseFloat(boxA)
     const numB = parseFloat(boxB)
@@ -20,10 +25,67 @@ function App() {
     setResult(numA + numB)
   }
 
+  // Supporting function - save suggestion to localStorage
+  const saveSuggestion = () => {
+    if (!suggestionText.trim()) {
+      setSaveMessage('Please enter a suggestion!')
+      return
+    }
+
+    // Get existing suggestions from localStorage
+    const existingSuggestions = JSON.parse(localStorage.getItem('suggestions') || '[]')
+    
+    // Add new suggestion with timestamp
+    const newSuggestion = {
+      text: suggestionText,
+      timestamp: new Date().toLocaleString()
+    }
+    existingSuggestions.push(newSuggestion)
+    
+    // Save back to localStorage
+    localStorage.setItem('suggestions', JSON.stringify(existingSuggestions))
+    
+    // Reset and show success message
+    setSuggestionText('')
+    setSaveMessage('Suggestion saved! ✓')
+    
+    setTimeout(() => setSaveMessage(''), 3000)
+  }
+
   return (
     <div>
       <h1>Hello, world!</h1>
       <p>This is my first website.</p>
+      
+      {/* Suggestion Box - Top Right Corner */}
+      <div className="suggestion-box-corner">
+        <button 
+          className="suggestion-button"
+          onClick={() => setShowSuggestion(!showSuggestion)}
+        >
+          💡 Suggestions
+        </button>
+
+        {showSuggestion && (
+          <div className="suggestion-panel">
+            <h3>Send us feedback!</h3>
+            <textarea
+              value={suggestionText}
+              onChange={(e) => setSuggestionText(e.target.value)}
+              placeholder="Share your ideas or report issues..."
+            />
+            <button 
+              className="suggestion-save-btn"
+              onClick={saveSuggestion}
+            >
+              Save Suggestion
+            </button>
+            {saveMessage && (
+              <div className="suggestion-message">{saveMessage}</div>
+            )}
+          </div>
+        )}
+      </div>
       
       {/* Input boxes */}
       <div className="calculator-section">
