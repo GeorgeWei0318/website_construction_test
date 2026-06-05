@@ -63,7 +63,7 @@ function App() {
           className="suggestion-button"
           onClick={() => setShowSuggestion(!showSuggestion)}
         >
-          💡 Suggestions
+          Suggestions
         </button>
 
         {showSuggestion && (
