@@ -1,0 +1,212 @@
+.search-page {
+  padding: 20px 0;
+}
+
+.search-page h1 {
+  color: var(--primary);
+  margin-bottom: 30px;
+  font-size: 28px;
+}
+
+.filters-container {
+  background: var(--panel-bg);
+  padding: 20px;
+  border-radius: 14px;
+  margin-bottom: 30px;
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  box-shadow: var(--shadow-card);
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.filter-group label {
+  font-weight: 700;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.filter-group select {
+  padding: 10px 12px;
+  border: 1px solid #d8dfe9;
+  border-radius: 10px;
+  font-size: 14px;
+  background-color: var(--surface-soft);
+  cursor: pointer;
+  min-width: 150px;
+}
+
+.filter-group select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(10, 102, 194, 0.12);
+}
+
+.reset-btn {
+  padding: 10px 20px;
+  background-color: var(--surface-muted);
+  border: 1px solid #d9d9d9;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--text);
+  transition: all 0.3s;
+}
+
+.reset-btn:hover {
+  background-color: #e3e7ee;
+}
+
+.results-info {
+  margin-bottom: 20px;
+  color: var(--text-soft);
+  font-size: 14px;
+}
+
+.people-list {
+  display: grid;
+  gap: 20px;
+  width: 100%;
+}
+
+.people-card {
+  background: var(--panel-bg);
+  border-radius: 14px;
+  padding: 20px;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  box-shadow: var(--shadow-card);
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.people-card:hover {
+  box-shadow: var(--shadow-soft);
+  transform: translateY(-2px);
+}
+
+.card-avatar {
+  width: 110px;
+  height: 110px;
+  min-width: 110px;
+  border-radius: 18px;
+  overflow: hidden;
+  background: #eef4ff;
+}
+
+.card-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.card-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.card-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.title-line {
+  align-items: baseline;
+  gap: 12px;
+}
+
+.card-info h3 {
+  color: var(--primary);
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.company {
+  font-weight: 700;
+  color: var(--text);
+  font-size: 1rem;
+}
+
+.secondary-line,
+.tertiary-line {
+  color: var(--text-soft);
+  font-size: 0.95rem;
+}
+
+.separator {
+  color: #a0abb8;
+}
+
+.connect-btn {
+  padding: 10px 24px;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  color: var(--panel-bg);
+  border: none;
+  border-radius: 24px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.connect-btn:hover {
+  filter: brightness(1.05);
+}
+
+.no-results {
+  text-align: center;
+  padding: 40px;
+  color: #8a8a8a;
+  font-size: 16px;
+  background: var(--panel-bg);
+  border-radius: 14px;
+  box-shadow: var(--shadow-card);
+}
+
+@media (max-width: 600px) {
+  .filters-container {
+    flex-direction: column;
+  }
+
+  .filter-group {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+
+  .filter-group select {
+    width: 100%;
+  }
+
+  .people-card {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .card-avatar {
+    width: 100%;
+    max-width: 180px;
+    height: 180px;
+  }
+
+  .card-info,
+  .card-line {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .connect-btn {
+    width: 100%;
+  }
+}
