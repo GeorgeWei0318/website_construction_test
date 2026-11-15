@@ -111,6 +111,15 @@ export const saveUserRegistration = (userData) => {
   return newUser
 }
 
+export const authenticateUser = (email, password) => {
+  const users = JSON.parse(localStorage.getItem('users') || '[]')
+  const normalizedEmail = email.trim().toLowerCase()
+
+  return users.find(
+    (user) => user.email.toLowerCase() === normalizedEmail && user.password === password
+  ) || null
+}
+
 // Get current logged-in user (from localStorage)
 export const getCurrentUser = () => {
   return JSON.parse(localStorage.getItem('currentUser') || 'null')

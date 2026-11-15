@@ -44,3 +44,12 @@ body {
   margin-right: auto;
   width: 100%;
 }
+
+.page-content.auth-page-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 72px);
+  margin-top: 72px;
+  padding: 40px 20px;
+}

@@ -1,6 +1,6 @@
 import '../styles/topbar.css'
 
-function TopBar({ currentUser, onNavigate, onLogout, onLoginRegister }) {
+function TopBar({ currentUser, onNavigate, onLogout, onLogin, onRegister }) {
   const initials = currentUser
     ? `${currentUser.firstName?.[0] || ''}${currentUser.lastName?.[0] || ''}`
     : 'LI'
@@ -48,8 +48,8 @@ function TopBar({ currentUser, onNavigate, onLogout, onLoginRegister }) {
           </>
         ) : (
           <>
-            <button className="login-btn" onClick={onLoginRegister}>Log In</button>
-            <button className="join-btn" onClick={onLoginRegister}>Join for Free</button>
+            <button className="login-btn" onClick={onLogin}>Log In</button>
+            <button className="join-btn" onClick={onRegister}>Join for Free</button>
           </>
         )}
       </div>

@@ -57,12 +57,12 @@ function MatchPage({ currentUser }) {
               <span className="separator">•</span>
               <span>{person.phone || 'Phone unavailable'}</span>
             </div>
-          </div>
-        </div>
 
-        <div className="summary-panel">
-          <h3>About Me</h3>
-          <p>{profileIntro}</p>
+            <div className="summary-panel">
+              <h3>About Me</h3>
+              <p>{profileIntro}</p>
+            </div>
+          </div>
         </div>
 
         <div className="card-actions">

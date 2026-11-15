@@ -64,7 +64,6 @@ function RegisterPage({ onRegister }) {
     <div className="register-page">
       <div className="register-container">
         <h1>Create Your Account</h1>
-        <p className="subtitle">Join our professional network today</p>
 
         {error && <div className="error-message">{error}</div>}
         {success && <div className="success-message">{success}</div>}
