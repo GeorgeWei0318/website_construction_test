@@ -45,7 +45,7 @@ function App() {
       />
 
       {/* Page Content */}
-      <div className={`page-content${currentPage === 'login' || currentPage === 'register' ? ' auth-page-content' : ''}`}>
+      <div className={`page-content${currentPage === 'login' || currentPage === 'register' ? ' auth-page-content' : ''}${currentPage === 'login' ? ' login-page-content' : ''}`}>
         {currentPage === 'main' && (
           <MainPage
             onSearch={() => setCurrentPage('search')}

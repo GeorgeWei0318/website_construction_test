@@ -53,3 +53,7 @@ body {
   margin-top: 72px;
   padding: 40px 20px;
 }
+
+.page-content.login-page-content {
+  align-items: flex-start;
+}
