@@ -1,0 +1,108 @@
+.messages-page {
+  padding: 28px 0;
+}
+
+.message-request-list {
+  display: grid;
+  gap: 20px;
+}
+
+.message-request-card {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  padding: 20px;
+  border-radius: 14px;
+  background: var(--panel-bg);
+  box-shadow: var(--shadow-card);
+}
+
+.message-request-avatar {
+  display: flex;
+  flex: 0 0 110px;
+  align-items: center;
+  justify-content: center;
+  width: 110px;
+  height: 110px;
+  overflow: hidden;
+  border-radius: 18px;
+  background: #eef4ff;
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.message-request-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.message-request-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.message-request-info h2 {
+  margin: 0 0 8px;
+  color: var(--primary);
+  font-size: 1.2rem;
+}
+
+.message-request-info p {
+  margin-top: 6px;
+  color: var(--text-soft);
+  font-size: 0.95rem;
+}
+
+.message-request-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.messages-primary-button,
+.messages-secondary-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 24px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.messages-primary-button {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  color: var(--panel-bg);
+}
+
+.messages-secondary-button {
+  background: #e7eef8;
+  color: #35506f;
+}
+
+.messages-empty {
+  padding: 32px;
+  border-radius: 14px;
+  background: var(--panel-bg);
+  color: var(--text-soft);
+  text-align: center;
+  box-shadow: var(--shadow-card);
+}
+
+.messages-empty p {
+  margin-bottom: 20px;
+}
+
+@media (max-width: 700px) {
+  .message-request-card {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .message-request-actions {
+    width: 100%;
+  }
+
+  .message-request-actions button {
+    flex: 1;
+  }
+}

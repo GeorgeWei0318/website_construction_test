@@ -1,26 +1,40 @@
 import { useState, useEffect } from 'react'
 import '../styles/match.css'
-import { mockPeople } from '../utils/mockData'
+import { createConnectionRequest, getConnectionStatus, mockPeople } from '../utils/mockData'
 
-function MatchPage({ currentUser }) {
+function MatchPage({ currentUser, onLogin }) {
   const [matches, setMatches] = useState([])
   const [currentIndex, setCurrentIndex] = useState(0)
+  const [requestStatus, setRequestStatus] = useState('none')
 
   useEffect(() => {
-    const shuffled = [...mockPeople].sort(() => Math.random() - 0.5)
+    const availablePeople = mockPeople.filter(
+      (person) => person.email.toLowerCase() !== currentUser?.email.toLowerCase()
+    )
+    const shuffled = [...availablePeople].sort(() => Math.random() - 0.5)
     setMatches(shuffled.slice(0, 5))
-  }, [])
+  }, [currentUser?.email])
+
+  useEffect(() => {
+    setRequestStatus(getConnectionStatus(currentUser?.email, matches[currentIndex]?.email))
+  }, [currentUser?.email, currentIndex, matches])
 
   const handleNext = () => {
     setCurrentIndex((prev) => (prev + 1) % matches.length)
   }
 
   const handleConnect = () => {
-    alert(`Connected with ${matches[currentIndex]?.firstName}!`)
+    if (!currentUser) {
+      onLogin()
+      return
+    }
+
+    const request = createConnectionRequest(currentUser, matches[currentIndex])
+    setRequestStatus(request.status)
   }
 
   if (matches.length === 0) {
-    return <div className="match-page">Loading...</div>
+    return <div className="match-page">No people to match right now.</div>
   }
 
   const person = matches[currentIndex]
@@ -67,7 +81,19 @@ function MatchPage({ currentUser }) {
 
         <div className="card-actions">
           <button className="action-btn next-btn" onClick={handleNext}>Next</button>
-          <button className="action-btn connect-btn" onClick={handleConnect}>Connect</button>
+          <button
+            className="action-btn connect-btn"
+            onClick={handleConnect}
+            disabled={requestStatus === 'pending' || requestStatus === 'accepted'}
+          >
+            {!currentUser
+              ? 'Log in to Connect'
+              : requestStatus === 'pending'
+                ? 'Sent!'
+                : requestStatus === 'accepted'
+                  ? 'Connected'
+                  : 'Connect'}
+          </button>
         </div>
       </div>
     </div>

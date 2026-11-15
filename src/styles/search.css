@@ -132,10 +132,10 @@
   font-size: 1.2rem;
 }
 
-.company {
+.people-card .company {
   font-weight: 700;
   color: var(--text);
-  font-size: 1rem;
+  font-size: 1.2rem;
 }
 
 .secondary-line,
@@ -162,6 +162,12 @@
 
 .connect-btn:hover {
   filter: brightness(1.05);
+}
+
+.connect-btn:disabled {
+  cursor: default;
+  filter: none;
+  opacity: 0.75;
 }
 
 .no-results {

@@ -72,19 +72,19 @@ function RegisterPage({ onRegister }) {
           <div className="form-row">
             <div className="form-group">
               <label htmlFor="firstName">First Name *</label>
-              <input type="text" id="firstName" name="firstName" value={formData.firstName} onChange={handleChange} placeholder="John" />
+              <input type="text" id="firstName" name="firstName" value={formData.firstName} onChange={handleChange} placeholder="George" />
             </div>
 
             <div className="form-group">
               <label htmlFor="lastName">Last Name *</label>
-              <input type="text" id="lastName" name="lastName" value={formData.lastName} onChange={handleChange} placeholder="Doe" />
+              <input type="text" id="lastName" name="lastName" value={formData.lastName} onChange={handleChange} placeholder="Wei" />
             </div>
           </div>
 
           <div className="form-row">
             <div className="form-group">
               <label htmlFor="email">Email *</label>
-              <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} placeholder="john.doe@example.com" />
+              <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} placeholder="george.wei@example.com" />
             </div>
 
             <div className="form-group">

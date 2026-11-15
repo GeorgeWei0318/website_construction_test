@@ -6,16 +6,19 @@ import LoginPage from './components/LoginPage'
 import SearchPage from './components/SearchPage'
 import MatchPage from './components/MatchPage'
 import MainPage from './components/MainPage'
+import MessagesPage from './components/MessagesPage'
+import ChatPage from './components/ChatPage'
+import NetworkPage from './components/NetworkPage'
 import { getCurrentUser, setCurrentUser } from './utils/mockData'
 
 function App() {
-  const [currentPage, setCurrentPage] = useState('main') // main, search, match, register, login
+  const [currentPage, setCurrentPage] = useState('main') // main, search, match, network, messages, chat, register, login
   const [currentUser, setCurrentUserState] = useState(getCurrentUser())
+  const [selectedChatEmail, setSelectedChatEmail] = useState('')
 
   const handleRegister = (userData) => {
-    // Save user data
-    setCurrentUser(userData)
-    setCurrentUserState(userData)
+    const profile = setCurrentUser(userData)
+    setCurrentUserState(profile)
     setCurrentPage('main')
   }
 
@@ -53,10 +56,36 @@ function App() {
           />
         )}
         {currentPage === 'search' && (
-          <SearchPage />
+          <SearchPage
+            currentUser={currentUser}
+            onLogin={() => setCurrentPage('login')}
+          />
         )}
         {currentPage === 'match' && (
-          <MatchPage currentUser={currentUser} />
+          <MatchPage
+            currentUser={currentUser}
+            onLogin={() => setCurrentPage('login')}
+          />
+        )}
+        {currentPage === 'messages' && (
+          <MessagesPage currentUser={currentUser} onLogin={() => setCurrentPage('login')} />
+        )}
+        {currentPage === 'network' && (
+          <NetworkPage
+            currentUser={currentUser}
+            onLogin={() => setCurrentPage('login')}
+            onOpenChat={(email) => {
+              setSelectedChatEmail(email)
+              setCurrentPage('chat')
+            }}
+          />
+        )}
+        {currentPage === 'chat' && (
+          <ChatPage
+            currentUser={currentUser}
+            onLogin={() => setCurrentPage('login')}
+            initialContactEmail={selectedChatEmail}
+          />
         )}
         {currentPage === 'register' && (
           <RegisterPage onRegister={handleRegister} />

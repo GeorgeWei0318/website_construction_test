@@ -72,7 +72,7 @@
   font-size: 2rem;
 }
 
-.company {
+.match-card .company {
   color: var(--text);
   font-weight: 700;
   font-size: 2rem;

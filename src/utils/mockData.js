@@ -98,9 +98,23 @@ export const mockPeople = [
   }
 ]
 
+export const mockAccounts = mockPeople.map((person) => ({
+  ...person,
+  password: 'demo123'
+}))
+
+const normalizeEmail = (email) => email.trim().toLowerCase()
+
+const publicProfile = (user) => {
+  const { password, ...profile } = user
+  return profile
+}
+
+const readLocalList = (key) => JSON.parse(localStorage.getItem(key) || '[]')
+
 // Save user registration to localStorage
 export const saveUserRegistration = (userData) => {
-  const users = JSON.parse(localStorage.getItem('users') || '[]')
+  const users = readLocalList('users')
   const newUser = {
     id: Date.now(),
     ...userData,
@@ -112,12 +126,9 @@ export const saveUserRegistration = (userData) => {
 }
 
 export const authenticateUser = (email, password) => {
-  const users = JSON.parse(localStorage.getItem('users') || '[]')
-  const normalizedEmail = email.trim().toLowerCase()
-
-  return users.find(
-    (user) => user.email.toLowerCase() === normalizedEmail && user.password === password
-  ) || null
+  const normalizedEmail = normalizeEmail(email)
+  const users = [...readLocalList('users'), ...mockAccounts]
+  return users.find((user) => normalizeEmail(user.email) === normalizedEmail && user.password === password) || null
 }
 
 // Get current logged-in user (from localStorage)
@@ -127,5 +138,109 @@ export const getCurrentUser = () => {
 
 // Set current logged-in user
 export const setCurrentUser = (user) => {
-  localStorage.setItem('currentUser', JSON.stringify(user))
+  const profile = publicProfile(user)
+  localStorage.setItem('currentUser', JSON.stringify(profile))
+  return profile
+}
+
+export const getConnectionStatus = (fromEmail, toEmail) => {
+  if (!fromEmail || !toEmail) return 'none'
+
+  const request = readLocalList('connectionRequests')
+    .filter((item) => item.fromEmail === normalizeEmail(fromEmail) && item.toEmail === normalizeEmail(toEmail))
+    .pop()
+  return request?.status || 'none'
+}
+
+export const createConnectionRequest = (fromUser, toUser) => {
+  const fromEmail = normalizeEmail(fromUser.email)
+  const toEmail = normalizeEmail(toUser.email)
+  if (fromEmail === toEmail) {
+    throw new Error('You cannot connect with yourself.')
+  }
+
+  const requests = readLocalList('connectionRequests')
+  const existing = requests.find(
+    (item) => item.fromEmail === fromEmail && item.toEmail === toEmail &&
+      (item.status === 'pending' || item.status === 'accepted')
+  )
+  if (existing) return existing
+
+  const request = {
+    id: `${Date.now()}-${Math.random().toString(36).slice(2)}`,
+    fromEmail,
+    toEmail,
+    fromProfile: publicProfile(fromUser),
+    toProfile: publicProfile(toUser),
+    status: 'pending',
+    createdAt: new Date().toISOString()
+  }
+
+  requests.push(request)
+  localStorage.setItem('connectionRequests', JSON.stringify(requests))
+  return request
+}
+
+export const getIncomingConnectionRequests = (email) => {
+  const normalizedEmail = normalizeEmail(email)
+  return readLocalList('connectionRequests').filter(
+    (request) => request.toEmail === normalizedEmail && request.status === 'pending'
+  )
+}
+
+export const respondToConnectionRequest = (requestId, response) => {
+  if (!['accepted', 'declined'].includes(response)) {
+    throw new Error('Unsupported connection request response.')
+  }
+
+  const requests = readLocalList('connectionRequests')
+  const request = requests.find((item) => item.id === requestId && item.status === 'pending')
+  if (!request) return false
+
+  request.status = response
+  request.respondedAt = new Date().toISOString()
+  localStorage.setItem('connectionRequests', JSON.stringify(requests))
+
+  if (response === 'accepted') {
+    const chats = readLocalList('chats')
+    const chatId = [request.fromEmail, request.toEmail].sort().join(':')
+    if (!chats.some((chat) => chat.id === chatId)) {
+      chats.push({
+        id: chatId,
+        participantEmails: [request.fromEmail, request.toEmail],
+        participants: [request.fromProfile, request.toProfile],
+        messages: []
+      })
+      localStorage.setItem('chats', JSON.stringify(chats))
+    }
+  }
+
+  return true
+}
+
+export const getChatsForUser = (email) => {
+  const normalizedEmail = normalizeEmail(email)
+  return readLocalList('chats').filter((chat) => chat.participantEmails.includes(normalizedEmail))
+}
+
+export const sendChatMessage = (chatId, senderEmail, text) => {
+  const chats = readLocalList('chats')
+  const chat = chats.find(
+    (item) => item.id === chatId && item.participantEmails.includes(normalizeEmail(senderEmail))
+  )
+  if (!chat) {
+    throw new Error('Chat not found for this user.')
+  }
+
+  const message = {
+    id: `${Date.now()}-${Math.random().toString(36).slice(2)}`,
+    senderEmail: normalizeEmail(senderEmail),
+    text: text.trim(),
+    createdAt: new Date().toISOString()
+  }
+  if (!message.text) return chat
+
+  chat.messages.push(message)
+  localStorage.setItem('chats', JSON.stringify(chats))
+  return chat
 }

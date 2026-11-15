@@ -1,17 +1,19 @@
 import { useState } from 'react'
 import '../styles/search.css'
-import { mockPeople } from '../utils/mockData'
+import { createConnectionRequest, getConnectionStatus, mockPeople } from '../utils/mockData'
 
-function SearchPage() {
+function SearchPage({ currentUser, onLogin }) {
   const [selectedCompany, setSelectedCompany] = useState('')
   const [selectedDepartment, setSelectedDepartment] = useState('')
   const [selectedPosition, setSelectedPosition] = useState('')
+  const [, setRequestVersion] = useState(0)
 
   const companies = [...new Set(mockPeople.map(p => p.company))]
   const departments = [...new Set(mockPeople.map(p => p.department))]
   const positions = [...new Set(mockPeople.map(p => p.position))]
 
   const filteredPeople = mockPeople.filter(person => {
+    if (currentUser?.email.toLowerCase() === person.email.toLowerCase()) return false
     const companyMatch = !selectedCompany || person.company === selectedCompany
     const departmentMatch = !selectedDepartment || person.department === selectedDepartment
     const positionMatch = !selectedPosition || person.position === selectedPosition
@@ -91,7 +93,25 @@ function SearchPage() {
                 </div>
               </div>
 
-              <button className="connect-btn">Connect</button>
+              <button
+                className="connect-btn"
+                onClick={() => {
+                  if (!currentUser) {
+                    onLogin()
+                    return
+                  }
+                  createConnectionRequest(currentUser, person)
+                  setRequestVersion((version) => version + 1)
+                }}
+                disabled={currentUser && ['pending', 'accepted'].includes(getConnectionStatus(currentUser.email, person.email))}
+                aria-label={`Connect with ${person.firstName} ${person.lastName}`}
+              >
+                {currentUser && getConnectionStatus(currentUser.email, person.email) === 'pending'
+                  ? 'Sent!'
+                  : currentUser && getConnectionStatus(currentUser.email, person.email) === 'accepted'
+                    ? 'Connected'
+                    : 'Connect'}
+              </button>
             </div>
           ))
         ) : (

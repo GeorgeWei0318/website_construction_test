@@ -14,13 +14,13 @@ function TopBar({ currentUser, onNavigate, onLogout, onLogin, onRegister }) {
           <button className="nav-item is-active" onClick={() => onNavigate('main')}>
             Home
           </button>
-          <button className="nav-item" onClick={() => onNavigate('main')}>
+          <button className="nav-item" onClick={() => onNavigate('network')}>
             Network
           </button>
-          <button className="nav-item" onClick={() => onNavigate('main')}>
-            Jobs
+          <button className="nav-item" onClick={() => onNavigate('messages')}>
+            Message
           </button>
-          <button className="nav-item" onClick={() => onNavigate('main')}>
+          <button className="nav-item" onClick={() => onNavigate('chat')}>
             Chat
           </button>
         </nav>
@@ -42,7 +42,6 @@ function TopBar({ currentUser, onNavigate, onLogout, onLogin, onRegister }) {
               ) : (
                 <span className="user-avatar">{initials}</span>
               )}
-              <span className="user-name">{currentUser.firstName} {currentUser.lastName}</span>
             </div>
             <button className="logout-btn" onClick={onLogout}>Logout</button>
           </>
